@@ -50,6 +50,11 @@ app.use("/api/v1/blog/*", (req, res, next) => __awaiter(void 0, void 0, void 0, 
         return res.status(404).json({ error: "Unauthorized" });
     }
 }));
+app.get("/", (req, res) => {
+    res.send({
+        msg: "hii from dashbord"
+    });
+});
 // User signup route
 app.post("/api/v1/user/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
@@ -129,7 +134,7 @@ app.put("/api/v1/blog/", (req, res) => __awaiter(void 0, void 0, void 0, functio
     // Check if the post exists and belongs to the current user
     prisma.post.update({
         where: {
-            id: "f7d934ea-2a7b-450f-8e68-71ab96b99402",
+            id: userId,
             authorId: userId
         },
         data: {

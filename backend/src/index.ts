@@ -49,6 +49,11 @@ app.use("/api/v1/blog/*", async (req, res, next) => {
         return res.status(404).json({ error: "Unauthorized" });
     }
 });
+app.get("/", (req, res) => {
+    res.send({
+        msg: "hii from dashbord"
+    })
+})
 
 // User signup route
 app.post("/api/v1/user/signup", async (req, res) => {
@@ -134,7 +139,7 @@ app.put("/api/v1/blog/", async (req, res) => {
         // Check if the post exists and belongs to the current user
         prisma.post.update({
             where: {
-                id: "f7d934ea-2a7b-450f-8e68-71ab96b99402",
+                id: userId,
                 authorId: userId
             },
             data: {
