@@ -92,6 +92,7 @@ app.post("/api/v1/user/signin", async (req, res) => {
                 message: "User not found"
             });
         }
+            
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "");
         return res.json({
             token
@@ -122,6 +123,7 @@ try {
             message: "post created",
             id: post.id
             
+            
         })
     
     }
@@ -150,12 +152,27 @@ app.put("/api/v1/blog/", async (req, res) => {
         return res.send("..")
 });
 
-// Specific blog post route
-app.post("/api/v1/blog/:id", (req, res) => {
-    // Add specific blog post logic here
-    res.status(200).json({ message: `Blog post with id ${req.params.id} accessed` });
-});
+app.get("/api/v1/blog/:id", async (req, res) => {
+    const userId = req.params.id;
+    console.log(userId)
+    try {
+        const post = await prisma.post.findFirst({
+            where: {
+                authorId: userId ,  // Ensure this field exists in your schema
+            },
+        });
 
+        if (post) {
+            // Add specific blog post logic here
+            res.send({ userId, post });
+        } else {
+            res.status(404).send({ message: "Post not found" });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "An error occurred while fetching the post" });
+    }
+});
 // Bulk blog post route
 app.get("/api/v1/blog/bulk", async(req, res) => {
     const post =await prisma.post.findMany({})
