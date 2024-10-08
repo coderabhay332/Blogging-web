@@ -14,15 +14,26 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
     async function sendRequest() {
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs);
-            const jwt = response.data;
-            localStorage.setItem("token", jwt);
-            navigate("/blogs");
-        } catch(e) {
-            alert("Error while signing up")
-            // alert the user here that the request failed
+            const requestData = type === "signin" 
+                ? { username: postInputs.username, password: postInputs.password }
+                : postInputs;
+            
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, requestData);
+            
+            // Extract token properly
+            const token = response.data.token;
+            if (token) {
+                localStorage.setItem("token", token);
+                navigate("/blogs");
+            } else {
+                alert("Failed to receive token");
+            }
+        } catch (e: any) {
+            const errorMessage = e?.response?.data?.message || "Error while signing up";
+            alert(errorMessage);
         }
     }
+    
     
     return <div className="h-screen flex justify-center flex-col">
         <div className="flex justify-center">
