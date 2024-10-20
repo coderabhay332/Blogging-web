@@ -1,5 +1,5 @@
 // LandingPage.tsx
-import React, { FC, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
+import { FC, ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
 import { PenSquare, BookOpen, Users } from 'lucide-react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
